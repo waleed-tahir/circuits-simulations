@@ -28,13 +28,14 @@ plt.rcParams.update({
     "grid.linestyle": "--"
 })
 
-BASE_DIR = r"c:\Users\PC\Desktop\circuits_simulations"
-PLOTS_DIR = os.path.join(BASE_DIR, "plots")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+OPAMPS_DIR = os.path.join(BASE_DIR, "opamps")
+PLOTS_DIR = os.path.join(OPAMPS_DIR, "plots")
 os.makedirs(PLOTS_DIR, exist_ok=True)
 
 
 def plot_inverting_amplifier(client):
-    raw_path = os.path.join(BASE_DIR, "01_inverting_amplifier", "01_inverting_amplifier.raw")
+    raw_path = os.path.join(OPAMPS_DIR, "01_inverting_amplifier", "01_inverting_amplifier.raw")
     data = client.read_waveforms(raw_path, ["V(in)", "V(out)"])
     if not data or "data" not in data:
         print("[!] Could not read 01_inverting_amplifier.raw")
@@ -44,7 +45,6 @@ def plot_inverting_amplifier(client):
     vin = np.array(data["data"]["signals"]["V(in)"]["values"])
     vout = np.array(data["data"]["signals"]["V(out)"]["values"])
 
-    # Zoom to last 2 full cycles (1ms to 3ms)
     mask = (t >= 1.0) & (t <= 3.0)
     t_plot = t[mask] - 1.0
     vin_plot = vin[mask]
@@ -70,7 +70,7 @@ def plot_inverting_amplifier(client):
 
 
 def plot_non_inverting_amplifier(client):
-    raw_path = os.path.join(BASE_DIR, "02_non_inverting_amplifier", "02_non_inverting_amplifier.raw")
+    raw_path = os.path.join(OPAMPS_DIR, "02_non_inverting_amplifier", "02_non_inverting_amplifier.raw")
     data = client.read_waveforms(raw_path, ["V(in)", "V(out)"])
     if not data or "data" not in data:
         print("[!] Could not read 02_non_inverting_amplifier.raw")
@@ -105,7 +105,7 @@ def plot_non_inverting_amplifier(client):
 
 
 def plot_voltage_follower(client):
-    raw_path = os.path.join(BASE_DIR, "03_voltage_follower", "03_voltage_follower.raw")
+    raw_path = os.path.join(OPAMPS_DIR, "03_voltage_follower", "03_voltage_follower.raw")
     data = client.read_waveforms(raw_path, ["V(in)", "V(out)"])
     if not data or "data" not in data:
         print("[!] Could not read 03_voltage_follower.raw")
@@ -145,7 +145,7 @@ def plot_voltage_follower(client):
 
 
 def plot_summing_amplifier(client):
-    raw_path = os.path.join(BASE_DIR, "04_summing_amplifier", "04_summing_amplifier.raw")
+    raw_path = os.path.join(OPAMPS_DIR, "04_summing_amplifier", "04_summing_amplifier.raw")
     data = client.read_waveforms(raw_path, ["V(in1)", "V(in2)", "V(in3)", "V(out)"])
     if not data or "data" not in data:
         print("[!] Could not read 04_summing_amplifier.raw")
@@ -181,7 +181,7 @@ def plot_summing_amplifier(client):
 
 
 def plot_difference_amplifier(client):
-    raw_path = os.path.join(BASE_DIR, "05_difference_amplifier", "05_difference_amplifier.raw")
+    raw_path = os.path.join(OPAMPS_DIR, "05_difference_amplifier", "05_difference_amplifier.raw")
     data = client.read_waveforms(raw_path, ["V(in1)", "V(in2)", "V(out)"])
     if not data or "data" not in data:
         print("[!] Could not read 05_difference_amplifier.raw")
@@ -217,7 +217,7 @@ def plot_difference_amplifier(client):
 
 
 def plot_integrator(client):
-    raw_path = os.path.join(BASE_DIR, "06_integrator", "06_integrator.raw")
+    raw_path = os.path.join(OPAMPS_DIR, "06_integrator", "06_integrator.raw")
     data = client.read_waveforms(raw_path, ["V(in)", "V(out)"])
     if not data or "data" not in data:
         print("[!] Could not read 06_integrator.raw")
@@ -251,7 +251,7 @@ def plot_integrator(client):
 
 
 def plot_differentiator(client):
-    raw_path = os.path.join(BASE_DIR, "07_differentiator", "07_differentiator.raw")
+    raw_path = os.path.join(OPAMPS_DIR, "07_differentiator", "07_differentiator.raw")
     data = client.read_waveforms(raw_path, ["V(in)", "V(out)"])
     if not data or "data" not in data:
         print("[!] Could not read 07_differentiator.raw")
@@ -302,16 +302,13 @@ def plot_summary_dashboard(client):
 
     for idx, (folder, title, t_range, t_sub) in enumerate(circuits_info):
         ax = axes[idx]
-        raw_path = os.path.join(BASE_DIR, folder, f"{folder}.raw")
+        raw_path = os.path.join(OPAMPS_DIR, folder, f"{folder}.raw")
         if folder == "04_summing_amplifier":
             data = client.read_waveforms(raw_path, ["V(in1)", "V(in2)", "V(out)"])
-            sigs = ["V(in1)", "V(in2)", "V(out)"]
         elif folder == "05_difference_amplifier":
             data = client.read_waveforms(raw_path, ["V(in1)", "V(in2)", "V(out)"])
-            sigs = ["V(in1)", "V(in2)", "V(out)"]
         else:
             data = client.read_waveforms(raw_path, ["V(in)", "V(out)"])
-            sigs = ["V(in)", "V(out)"]
 
         if not data or "data" not in data:
             ax.text(0.5, 0.5, "Data unavailable", ha="center")

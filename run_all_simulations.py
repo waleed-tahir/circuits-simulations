@@ -1,7 +1,7 @@
 """
-Master Simulation Automation & Validation Script
-------------------------------------------------
-Runs all 7 operational amplifier circuits in LTspice, extracts and verifies
+Master Simulation Automation & Verification Script
+--------------------------------------------------
+Runs all operational amplifier circuits under opamps/ in LTspice, extracts and verifies
 all simulation metrics against their analytical textbook equations, and
 outputs a formatted summary comparison report.
 """
@@ -13,7 +13,8 @@ import subprocess
 import sys
 
 
-BASE_DIR = r"c:\Users\PC\Desktop\circuits_simulations"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+OPAMPS_DIR = os.path.join(BASE_DIR, "opamps")
 LTSPICE_EXE = r"C:\Program Files\ADI\LTspice\LTspice.exe"
 
 CIRCUITS = [
@@ -98,7 +99,6 @@ def parse_meas_from_log(log_path):
     with open(log_path, "r", encoding="utf-8", errors="ignore") as f:
         for line in f:
             line = line.strip()
-            # Match LTspice measurement outputs, e.g. "gain_mag: abs(vout_pk)/vin_pk=4.99969"
             m = re.match(r"^([a-zA-Z0-9_]+):.*=\s*([-+]?[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?)", line)
             if m:
                 var_name = m.group(1).lower()
@@ -112,15 +112,16 @@ def main():
     print("LTspice Op-Amp Basic Configurations — Automated Simulation & Verification")
     print("=" * 80)
     print(f"Simulator Engine: {LTSPICE_EXE}")
-    print(f"Base Directory:   {BASE_DIR}\n")
+    print(f"Base Directory:   {BASE_DIR}")
+    print(f"Op-Amps Folder:   {OPAMPS_DIR}\n")
 
     results = []
 
     for item in CIRCUITS:
         cid = item["id"]
         cname = item["name"]
-        asc_path = os.path.join(BASE_DIR, cid, f"{cid}.asc")
-        log_path = os.path.join(BASE_DIR, cid, f"{cid}.log")
+        asc_path = os.path.join(OPAMPS_DIR, cid, f"{cid}.asc")
+        log_path = os.path.join(OPAMPS_DIR, cid, f"{cid}.log")
 
         print(f"Running simulation for: {cname}...")
         cmd = [LTSPICE_EXE, "-b", asc_path]
@@ -164,8 +165,8 @@ def main():
 
     print("=" * 105)
 
-    # Save results to JSON
-    json_path = os.path.join(BASE_DIR, "simulation_results.json")
+    # Save results to JSON inside opamps/
+    json_path = os.path.join(OPAMPS_DIR, "simulation_results.json")
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
     print(f"\n[OK] Complete numeric results saved to: {json_path}")
