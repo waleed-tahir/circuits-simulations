@@ -1,0 +1,19 @@
+* 07 - Op-Amp Differentiator Simulation
+* Transfer Function: V_o(t) = -RC * dV_i/dt, G(s) = -RC*s
+* C = 100nF, R = 10k -> RC = 1.0ms
+.param Aol=1Meg GBW=100Meg
+.lib opamp.sub
+
+X1 inv 0 out opamp
+C1 in n_c 100n
+Rin n_c inv 220
+Rf inv out 10k
+Cf inv out 100p
+
+V1 in 0 PULSE(-1 1 0 2m 2m 10u 4m)
+
+.tran 0 12m 0 1u
+.meas tran Vout_plateau_pos MAX V(out) FROM 6m TO 12m
+.meas tran Vout_plateau_neg MIN V(out) FROM 6m TO 12m
+.meas tran Vout_p2p PP V(out) FROM 6m TO 12m
+.end

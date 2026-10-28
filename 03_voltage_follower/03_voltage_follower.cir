@@ -1,0 +1,15 @@
+* 03 - Voltage Follower (Buffer) Simulation
+* Transfer Function: V_o = V_i, Gain = 1.000 (0.00 dB, 0 deg phase)
+.param Aol=1Meg GBW=100Meg
+.lib opamp.sub
+
+X1 out in out opamp
+V1 in 0 SINE(0 2 1k) AC 1
+RL out 0 1k
+
+.tran 0 3m 0 1u
+.meas tran Vin_pk MAX V(in) FROM 1m TO 3m
+.meas tran Vout_pk MAX V(out) FROM 1m TO 3m
+.meas tran Gain PARAM Vout_pk/Vin_pk
+.meas tran Tracking_Error MAX abs(V(out)-V(in)) FROM 1m TO 3m
+.end

@@ -1,0 +1,15 @@
+* 02 - Non-Inverting Amplifier Simulation
+* Transfer Function: V_o/V_i = 1 + R2/R1 = 1 + 30k/10k = +4.000 (12.041 dB, 0 deg phase)
+.param Aol=1Meg GBW=100Meg
+.lib opamp.sub
+
+X1 div in out opamp
+R1 div 0 10k
+R2 out div 30k
+V1 in 0 SINE(0 1 1k) AC 1
+
+.tran 0 3m 0 1u
+.meas tran Vin_pk MAX V(in) FROM 1m TO 3m
+.meas tran Vout_pk MAX V(out) FROM 1m TO 3m
+.meas tran Gain_Mag PARAM Vout_pk/Vin_pk
+.end

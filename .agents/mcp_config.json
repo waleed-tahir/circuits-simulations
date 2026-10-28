@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "ltspice": {
+      "command": "C:\\Program Files\\ADI\\LTspice\\ltspice-mcp-bridge.exe",
+      "args": [],
+      "env": {
+        "LTSPICE_INSTALL_DIR": "C:\\Program Files\\ADI\\LTspice"
+      }
+    }
+  }
+}

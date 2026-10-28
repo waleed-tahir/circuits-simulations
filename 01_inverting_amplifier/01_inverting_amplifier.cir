@@ -1,0 +1,16 @@
+* 01 - Inverting Amplifier Simulation
+* Transfer Function: V_o/V_i = -R2/R1 = -50k/10k = -5.000 (13.979 dB, 180 deg phase)
+.param Aol=1Meg GBW=100Meg
+.lib opamp.sub
+
+X1 inv 0 out opamp
+R1 in inv 10k
+R2 inv out 50k
+V1 in 0 SINE(0 1 1k) AC 1
+
+.tran 0 3m 0 1u
+.meas tran Vin_pk MAX V(in) FROM 1m TO 3m
+.meas tran Vout_pk MIN V(out) FROM 1m TO 3m
+.meas tran Gain_Mag PARAM abs(Vout_pk)/Vin_pk
+.meas tran Vinv_offset AVG abs(V(inv)) FROM 1m TO 3m
+.end

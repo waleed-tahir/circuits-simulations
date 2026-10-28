@@ -1,0 +1,16 @@
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# LTspice simulation runtime artifacts (re-generated on every simulation run)
+*.raw
+*.op.raw
+*.fft
+*.log
+*.db
+
+# Operating System files
+Thumbs.db
+desktop.ini
+.DS_Store

@@ -1,0 +1,118 @@
+[
+  {
+    "id": "01_inverting_amplifier",
+    "name": "Inverting Amplifier",
+    "formula": "V_o/V_i = -R2/R1",
+    "components": "R1=10k, R2=50k",
+    "theoretical": 5.0,
+    "simulated": 4.99969303502,
+    "error_pct": 0.006139299600000925,
+    "unit": "V/V (magnitude)",
+    "status": "PASS",
+    "all_measurements": {
+      "vin_pk": 0.999996542931,
+      "vout_pk": -4.99967575073,
+      "gain_mag": 4.99969303502
+    }
+  },
+  {
+    "id": "02_non_inverting_amplifier",
+    "name": "Non-Inverting Amplifier",
+    "formula": "V_o/V_i = 1 + R2/R1",
+    "components": "R1=10k, R2=30k",
+    "theoretical": 4.0,
+    "simulated": 3.99984359666,
+    "error_pct": 0.00391008350000277,
+    "unit": "V/V",
+    "status": "PASS",
+    "all_measurements": {
+      "vin_pk": 0.999995172024,
+      "vout_pk": 3.99982428551,
+      "gain_mag": 3.99984359666
+    }
+  },
+  {
+    "id": "03_voltage_follower",
+    "name": "Voltage Follower (Buffer)",
+    "formula": "V_o = V_i",
+    "components": "Direct feedback, RL=1k",
+    "theoretical": 1.0,
+    "simulated": 0.99999022481,
+    "error_pct": 0.0009775190000005374,
+    "unit": "V/V",
+    "status": "PASS",
+    "all_measurements": {
+      "vin_pk": 1.99999415874,
+      "vout_pk": 1.99997460842,
+      "gain": 0.99999022481,
+      "tracking_error": 0.000201001763344
+    }
+  },
+  {
+    "id": "04_summing_amplifier",
+    "name": "Summing Amplifier (Inverting)",
+    "formula": "V_o = -Rf*(V1/R1 + V2/R2 + V3/R3)",
+    "components": "Rf=20k, R1=20k, R2=10k, R3=40k",
+    "theoretical": -0.5,
+    "simulated": -0.499977500471,
+    "error_pct": 0.004499905800003923,
+    "unit": "V (DC offset)",
+    "status": "PASS",
+    "all_measurements": {
+      "vsum_virtual_gnd": 0.000129592336707,
+      "vout_dc": -0.499977500471,
+      "vout_min": -2.42808198929,
+      "vout_max": 1.42814338207
+    }
+  },
+  {
+    "id": "05_difference_amplifier",
+    "name": "Difference (Subtractor) Amp",
+    "formula": "V_o = (R2/R1)*(V2 - V1)",
+    "components": "R1=10k, R2=20k, R3=10k, R4=20k",
+    "theoretical": 2.0,
+    "simulated": 1.99994142826,
+    "error_pct": 0.0029285869999950975,
+    "unit": "V/V",
+    "status": "PASS",
+    "all_measurements": {
+      "vdiff_in_pk": 1.49999386072,
+      "vout_pk": 2.9998998642,
+      "diff_gain": 1.99994142826
+    }
+  },
+  {
+    "id": "06_integrator",
+    "name": "Integrator",
+    "formula": "V_o = -(1/RC) * integral(V_i dt)",
+    "components": "R=10k, C=100nF (tau=1ms)",
+    "theoretical": 0.159155,
+    "simulated": 0.159152436611,
+    "error_pct": 0.0016106242342258156,
+    "unit": "Vpk/Vpk @ 1kHz",
+    "status": "PASS",
+    "all_measurements": {
+      "vin_pp": 1.99999582767,
+      "vout_pp": 0.318304209187,
+      "theo_gain": 0.159154943274,
+      "sim_gain": 0.159152436611,
+      "error_pct": 0.00157498247786
+    }
+  },
+  {
+    "id": "07_differentiator",
+    "name": "Differentiator",
+    "formula": "V_o = -RC * (dVi/dt)",
+    "components": "C=100nF, Rf=10k, Rin=220",
+    "theoretical": 1.0,
+    "simulated": 1.00004005432,
+    "error_pct": 0.004005432000009357,
+    "unit": "V (Square plateau)",
+    "status": "PASS",
+    "all_measurements": {
+      "vout_plateau_pos": 1.00004005432,
+      "vout_plateau_neg": -1.00004005432,
+      "vout_p2p": 2.00008010864
+    }
+  }
+]

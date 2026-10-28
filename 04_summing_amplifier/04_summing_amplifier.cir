@@ -1,0 +1,22 @@
+* 04 - Summing Amplifier (Inverting) Simulation
+* Transfer Function: V_o = -Rf*(V1/R1 + V2/R2 + V3/R3)
+* Rf=20k, R1=20k (weight 1.0), R2=10k (weight 2.0), R3=40k (weight 0.5)
+.param Aol=1Meg GBW=100Meg
+.lib opamp.sub
+
+X1 sum 0 out opamp
+Rf sum out 20k
+R1 in1 sum 20k
+R2 in2 sum 10k
+R3 in3 sum 40k
+
+V1 in1 0 SINE(0 1.0 500)
+V2 in2 0 SINE(0 0.5 2000)
+V3 in3 0 DC 1.0
+
+.tran 0 6m 0 1u
+.meas tran Vsum_virtual_gnd AVG abs(V(sum)) FROM 2m TO 6m
+.meas tran Vout_DC AVG V(out) FROM 2m TO 6m
+.meas tran Vout_min MIN V(out) FROM 2m TO 6m
+.meas tran Vout_max MAX V(out) FROM 2m TO 6m
+.end

@@ -1,0 +1,19 @@
+* 06 - Op-Amp Integrator Simulation
+* Transfer Function: V_o(t) = -(1/RC) * integral(V_i dt), G(s) = -1/(RC*s)
+* R = 10k, C = 100nF -> RC = 1.0ms, unity-gain freq = 159.15Hz
+.param Aol=1Meg GBW=100Meg
+.lib opamp.sub
+
+X1 inv 0 out opamp
+R1 in inv 10k
+C1 inv out 100n ic=0
+
+V1 in 0 SINE(0 1 1k)
+
+.tran 0 5m 0 1u uic
+.meas tran Vin_pp PP V(in) FROM 2m TO 5m
+.meas tran Vout_pp PP V(out) FROM 2m TO 5m
+.meas tran Theo_Gain PARAM 1/(2*3.14159265*1000*0.001)
+.meas tran Sim_Gain PARAM (Vout_pp/2)/(Vin_pp/2)
+.meas tran Error_Pct PARAM 100*abs(Sim_Gain - Theo_Gain)/Theo_Gain
+.end
